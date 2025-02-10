@@ -1,15 +1,19 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class ClinicGUI extends JFrame {
+public abstract class BaseClinicGUI extends JFrame {
+
+    protected ClinicInfo clinic;
+    protected JPanel contentPanel;
 
     // General attributes
-    private static final int FRAME_WIDTH = 500;                                         // Frame width
-    private static final int FRAME_HEIGHT = 500;                                        // Frame height
-    private static final Color BACKGROUND_COLOR = new Color(230, 237, 231);    // GUI Background color
+    protected static final int FRAME_WIDTH = 500;                                         // Frame width
+    protected static final int FRAME_HEIGHT = 500;                                        // Frame height
+    protected static final Color BACKGROUND_COLOR = new Color(230, 237, 231);    // GUI Background color
 
     // Constructor
-    public ClinicGUI(ClinicInfo clinic) {
+    public BaseClinicGUI(ClinicInfo clinic) {
+        this.clinic = clinic;
         setTitle("Clinic Appointment System");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
@@ -18,6 +22,9 @@ public class ClinicGUI extends JFrame {
 
         // Initialize UI components
         initUI(clinic);
+
+        // Custom components for each screen
+        initComponents();
 
         setVisible(true);
     }
@@ -29,30 +36,22 @@ public class ClinicGUI extends JFrame {
         JPanel backgroundPanel = new JPanel(new BorderLayout());
         backgroundPanel.setBackground(BACKGROUND_COLOR);
 
-        // Logo label
-        JLabel logoLabel = createLogoLabel(clinic);
+        // Header with logo
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        headerPanel.setBackground(BACKGROUND_COLOR);
+        headerPanel.add(createLogoLabel());
+        backgroundPanel.add(headerPanel, BorderLayout.NORTH);
 
-        // Panel to center the logo
-        JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        logoPanel.setBackground(BACKGROUND_COLOR);
-        logoPanel.add(logoLabel);
-
-        // Panel for the "Book Appointment" button
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.setBackground(BACKGROUND_COLOR);
-        JButton button = new JButton("BOOK APPOINTMENT");
-        button.addActionListener(e -> JOptionPane.showMessageDialog(this, "Appointment Booking Coming Soon!"));
-        buttonPanel.add(button);
-
-        // Add components to background panel
-        backgroundPanel.add(logoPanel, BorderLayout.NORTH);
-        backgroundPanel.add(buttonPanel, BorderLayout.CENTER);
+        // Content panel
+        contentPanel = new JPanel();
+        contentPanel.setBackground(BACKGROUND_COLOR);
+        backgroundPanel.add(contentPanel, BorderLayout.CENTER);
 
         // Set the main content panel
         setContentPane(backgroundPanel);
     }
 
-    private JLabel createLogoLabel(ClinicInfo clinic) {
+    private JLabel createLogoLabel() {
         ImageIcon logo = new ImageIcon("src/Logo.png");  // Load the logo image
         JLabel logoLabel = new JLabel(clinic.getName().toUpperCase(), logo, JLabel.CENTER);
         logoLabel.setVerticalTextPosition(JLabel.BOTTOM);  // Place text below the image
@@ -64,4 +63,6 @@ public class ClinicGUI extends JFrame {
 
         return logoLabel;
     }
+
+    protected abstract void initComponents();
 }
