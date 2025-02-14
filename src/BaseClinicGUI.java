@@ -11,22 +11,27 @@ public abstract class BaseClinicGUI extends JFrame {
     protected static final int FRAME_HEIGHT = 500;                                        // Frame height
     protected static final Color BACKGROUND_COLOR = new Color(230, 237, 231);    // GUI Background color
 
-    // Constructor
-    public BaseClinicGUI(ClinicInfo clinic) {
+
+    // Overload constructor with boolean to make the final screen work
+    public BaseClinicGUI(ClinicInfo clinic, boolean autoInit) {
         this.clinic = clinic;
         setTitle("Clinic Appointment System");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(FRAME_WIDTH, FRAME_HEIGHT);
         setLocation(40, 50);
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout());      // Border layout
 
-        // Initialize UI components
         initUI(clinic);
 
-        // Custom components for each screen
-        initComponents();
+        if(autoInit) {
+            initComponents();
+        }
+        setVisible(true);       // Make window visible
+    }
 
-        setVisible(true);
+    // Default Constructor
+    public BaseClinicGUI(ClinicInfo clinic) {
+        this(clinic, true);
     }
 
 
@@ -64,5 +69,6 @@ public abstract class BaseClinicGUI extends JFrame {
         return logoLabel;
     }
 
+    // This will be override by other classes to add custom component, all the screens are the same except for the contents
     protected abstract void initComponents();
 }

@@ -1,4 +1,4 @@
-// Clinic information
+// Clinic information (More components can be added)
 public class ClinicInfo {
     // Variables
     private final String name;                  // Store name
